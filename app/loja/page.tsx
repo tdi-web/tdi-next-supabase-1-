@@ -1,0 +1,51 @@
+import { Header, Card, Button, Badge } from "@/components/Shell";
+import CopyPixButton from "@/components/CopyPixButton";
+import { createClient } from "@/lib/supabase/server";
+const money=(c:number)=>(c/100).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+
+export default async function LojaPage(){
+  const supabase = createClient();
+  const { data: products } = await supabase.from("products").select("*").eq("is_active",true).order("created_at",{ascending:false});
+  const pix = process.env.NEXT_PUBLIC_PIX_KEY!;
+  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_E164!;
+
+  return (<>
+    <Header subtitle="Loja"/>
+    <main className="mx-auto max-w-6xl px-5 py-10">
+      <h1 className="text-4xl font-black">Loja oficial</h1>
+      <p className="mt-2 text-sm text-muted">PIX + pedido no WhatsApp.</p>
+      <div className="mt-6 grid gap-3 lg:grid-cols-2">
+        <Card>
+          <div className="text-xs font-extrabold uppercase tracking-[.14em] text-gold2">PIX</div>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <Badge>Chave: {pix}</Badge>
+            <CopyPixButton pix={pix} />
+          </div>
+          <p className="mt-3 text-sm text-muted">Após pagar, envie o comprovante no WhatsApp.</p>
+        </Card>
+        <Card>
+          <div className="text-xs font-extrabold uppercase tracking-[.14em] text-gold2">WhatsApp</div>
+          <p className="mt-3 text-sm text-muted">O botão de compra já vai com mensagem pronta.</p>
+          <Button href={`https://wa.me/${whatsapp}`}>Abrir WhatsApp</Button>
+        </Card>
+      </div>
+
+      <section className="mt-10">
+        <h2 className="text-lg font-black">Produtos</h2>
+        <div className="mt-3 grid gap-3 lg:grid-cols-3">
+          {(products??[]).map((p:any)=>{
+            const msg = `Quero comprar ${p.name} da TROPA DOS INDIOZINHOS. Valor: ${money(p.price_cents)}. Vou pagar no PIX e mandar o comprovante.`;
+            const wa = `https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`;
+            return (
+              <Card key={p.id}>
+                <div className="text-base font-black">{p.name}</div>
+                <div className="mt-1 text-sm text-muted">{money(p.price_cents)}</div>
+                <div className="mt-4"><Button href={wa}>Comprar no WhatsApp</Button></div>
+              </Card>
+            );
+          })}
+        </div>
+      </section>
+    </main>
+  </>);
+}
