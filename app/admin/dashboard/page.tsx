@@ -30,6 +30,7 @@ export default async function Dashboard(){
           <div className="mt-4 flex flex-wrap gap-3">
             <Button href="/admin/elenco">Elenco</Button>
             <Button href="/admin/jogos" variant="outline">Jogos</Button>
+            <Button href="/admin/loja" variant="outline">Loja</Button>
           </div>
         </Card>
         <Card>

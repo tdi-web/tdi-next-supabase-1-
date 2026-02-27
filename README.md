@@ -28,3 +28,17 @@ Apenas e-mails na tabela `public.admins` podem editar (RLS). Já vem com:
 - Supabase > Authentication > URL Configuration: Site URL `http://localhost:3000` e Redirect `http://localhost:3000/auth/callback`.
 - Verifique spam/lixo eletrônico.
 - Em Authentication > Users você pode criar um usuário com senha para testar.
+
+
+## Upload de fotos (Elenco e Loja)
+Para upload direto pelo painel, use Supabase Storage:
+
+1) Storage > New bucket:
+- `jogadores` (PUBLIC)
+- `produtos` (PUBLIC)
+
+2) SQL Editor:
+- Rode `supabase/storage_players.sql` (se existir no seu projeto) ou crie policies equivalentes para `jogadores`
+- Rode `supabase/storage_products.sql` (para `produtos`)
+
+Se aparecer erro de RLS ("new row violates row-level security policy"), é porque falta policy de INSERT no `storage.objects`.

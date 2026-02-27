@@ -38,12 +38,22 @@ export default async function LojaPage(){
             const wa = `https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`;
             return (
               <Card key={p.id}>
-                <div className="text-base font-black">{p.name}</div>
-                <div className="mt-1 text-sm text-muted">{money(p.price_cents)}</div>
-                <div className="mt-4"><Button href={wa}>Comprar no WhatsApp</Button></div>
+                <div className="flex items-center gap-3">
+                  <div className="h-14 w-14 overflow-hidden rounded-2xl border border-line/60 bg-black/30">
+                    {p.image_url ? (
+                      <img src={p.image_url} alt={p.name} className="h-full w-full object-cover" />
+                    ) : null}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-base font-black">{p.name}</div>
+                    <div className="mt-1 text-sm text-muted">{money(p.price_cents)}</div>
+                    <div className="mt-4">
+                      <Button href={wa}>Comprar no WhatsApp</Button>
+                    </div>
+                  </div>
+                </div>
               </Card>
-            );
-          })}
+            );})}
         </div>
       </section>
     </main>
