@@ -26,35 +26,46 @@ export default function ProductFormClient({ upsertProduct }: Props){
     return data.publicUrl;
   }
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>){
-    e.preventDefault();
-    setBusy(true);
-    try{
-      const form = new FormData(e.currentTarget);
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault();
 
-      // Upload (se escolher arquivo)
-      if(file){
-        const url = await uploadAndGetUrl(file);
-        form.set("image_url", url);
-      }
+  const formEl = e.currentTarget; // 👈 salva antes dos await
 
-      await upsertProduct(form);
-      e.currentTarget.reset();
-      setFile(null); setPreview("");
-      alert("Produto salvo!");
-    }catch(err:any){
-      console.error(err);
-      alert("Erro ao salvar: " + (err?.message || String(err)));
-    }finally{
-      setBusy(false);
+  setBusy(true);
+  try {
+    const form = new FormData(formEl);
+
+    // Upload (se escolher arquivo)
+    if (file) {
+      const url = await uploadAndGetUrl(file);
+      form.set("image_url", url);
     }
-  }
 
-  function onPick(f?: File|null){
-    if(!f){ setFile(null); setPreview(""); return; }
-    setFile(f);
-    setPreview(URL.createObjectURL(f));
+    await upsertProduct(form);
+
+    formEl.reset();              // ✅ agora nunca dá null
+    setFile(null);
+    setPreview("");
+    alert("Produto salvo!");
+  } catch (err: any) {
+    console.error(err);
+    alert("Erro ao salvar: " + (err?.message || String(err)));
+  } finally {
+    setBusy(false);
   }
+}
+
+  function onPick(f?: File | null) {
+  if (preview) URL.revokeObjectURL(preview);
+
+  if (!f) {
+    setFile(null);
+    setPreview("");
+    return;
+  }
+  setFile(f);
+  setPreview(URL.createObjectURL(f));
+}
 
   return (
     <form onSubmit={onSubmit} className="mt-4 space-y-3">
