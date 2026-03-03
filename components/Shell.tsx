@@ -12,13 +12,14 @@ export function Header({ subtitle }: { subtitle?: string }) {
             <div className="text-xs text-muted">{subtitle ?? "Diamante d’Oeste • Preto & Dourado"}</div>
           </div>
         </Link>
-        <nav className="flex flex-wrap items-center justify-end gap-4 text-[12px] font-extrabold tracking-wide text-muted">
-          <Link className="hover:text-text" href="/elenco">ELENCO</Link>
-          <Link className="hover:text-text" href="/jogos">JOGOS</Link>
-          <Link className="hover:text-text" href="/historia">HISTÓRIA</Link>
-          <Link className="hover:text-text" href="/loja">LOJA</Link>
-          <Link className="hover:text-text" href="/admin/dashboard">ADMIN</Link>
-        </nav>
+       <nav className="flex flex-wrap items-center justify-end gap-4 text-[12px] font-extrabold">
+  <Link className="hover:text-text" href="/elenco">ELENCO</Link>
+  <Link className="hover:text-text" href="/jogos">JOGOS</Link>
+  <Link className="hover:text-text" href="/historia">HISTÓRIA</Link>
+  <Link className="hover:text-text" href="/loja">LOJA</Link>
+  <Link className="hover:text-text" href="/patrocinadores">PATROCINADORES</Link>
+  <Link className="hover:text-text" href="/admin/dashboard">ADMIN</Link>
+</nav>
       </div>
     </header>
   );
