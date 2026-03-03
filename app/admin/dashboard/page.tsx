@@ -31,6 +31,7 @@ export default async function Dashboard(){
             <Button href="/admin/elenco">Elenco</Button>
             <Button href="/admin/jogos" variant="outline">Jogos</Button>
             <Button href="/admin/loja" variant="outline">Loja</Button>
+            <Button href="/admin/patrocinadores" variant="outline">Patrocinadores</Button>
           </div>
         </Card>
         <Card>
