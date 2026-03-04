@@ -12,14 +12,13 @@ export async function upsertSponsor(formData: FormData) {
   const id = (formData.get("id") || "").toString() || null;
 
   const name = (formData.get("name") || "").toString().trim();
-  const website = (formData.get("website") || "").toString().trim() || null;
+  const website_url = (formData.get("website_url") || "").toString().trim() || null;
   const logo_url = (formData.get("logo_url") || "").toString().trim() || null;
   const is_active = toBool(formData.get("is_active"));
 
   if (!name) throw new Error("Nome é obrigatório");
 
-  const payload: any = { name, website, logo_url, is_active };
-
+  const payload: any = { name, website_url, logo_url, is_active };
   if (id) payload.id = id;
 
   const { error } = await supabase.from("sponsors").upsert(payload);
