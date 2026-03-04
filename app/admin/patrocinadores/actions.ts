@@ -1,12 +1,16 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/auth";   // 👈 adicionar
 
 function toBool(v: any) {
   return v === true || v === "true" || v === "1";
 }
 
 export async function upsertSponsor(formData: FormData) {
+
+  await requireAdmin();  // 👈 ESSENCIAL
+
   const supabase = createClient();
 
   const id = (formData.get("id") || "").toString() || null;
@@ -19,14 +23,26 @@ export async function upsertSponsor(formData: FormData) {
   if (!name) throw new Error("Nome é obrigatório");
 
   const payload: any = { name, website_url, logo_url, is_active };
+
   if (id) payload.id = id;
 
-  const { error } = await supabase.from("sponsors").upsert(payload);
+  const { error } = await supabase
+    .from("sponsors")
+    .upsert(payload);
+
   if (error) throw error;
 }
 
 export async function deleteSponsor(id: string) {
+
+  await requireAdmin(); // 👈 também aqui
+
   const supabase = createClient();
-  const { error } = await supabase.from("sponsors").delete().eq("id", id);
+
+  const { error } = await supabase
+    .from("sponsors")
+    .delete()
+    .eq("id", id);
+
   if (error) throw error;
 }
